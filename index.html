@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Pemeringkatan Siswa Eligible - SMA Takhassus Al-Qur'an Wonosobo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --success: #27ae60;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            --border-radius: 10px;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header Styles */
+        .header {
+            background: linear-gradient(to right, var(--primary), #34495e);
+            color: white;
+            padding: 25px 30px;
+            border-radius: var(--border-radius);
+            margin-bottom: 30px;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(to right, var(--accent), var(--secondary));
+        }
+
+        .header h1 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header h1 i {
+            color: var(--accent);
+        }
+
+        .header .subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header .badge {
+            background: var(--accent);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            background: #e8f4fc;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-card .stat-content h3 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-card .stat-content p {
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Controls */
+        .controls {
+            background: white;
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 15px 20px 15px 50px;
+            border: 2px solid #e0e0e0;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 12px 25px;
+            background: #f1f5f9;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #555;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .filter-btn.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .reset-btn {
+            padding: 12px 25px;
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .reset-btn:hover {
+            background: #e9ecef;
+        }
+
+        /* Main Content */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        @media (max-width: 1100px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Table Container */
+        .table-container {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .table-header {
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .table-header h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .table-info {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 800px;
+        }
+
+        thead {
+            background: var(--primary);
+            color: white;
+        }
+
+        th {
+            padding: 18px 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95rem;
+            white-space: nowrap;
+        }
+
+        th i {
+            margin-left: 5px;
+            opacity: 0.7;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f0f0f0;
+            transition: background 0.2s;
+        }
+
+        tbody tr:hover {
+            background: #f9f9f9;
+        }
+
+        td {
+            padding: 16px 15px;
+            font-size: 0.95rem;
+        }
+
+        .ranking-cell {
+            font-weight: 700;
+            color: var(--primary);
+            text-align: center;
+            width: 70px;
+        }
+
+        .ranking-1 { color: #e74c3c; }
+        .ranking-2 { color: #e67e22; }
+        .ranking-3 { color: #f39c12; }
+
+        .nama-cell {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .kelas-cell {
+            font-weight: 600;
+            color: var(--secondary);
+            text-align: center;
+            width: 80px;
+        }
+
+        .nisn-cell {
+            font-family: monospace;
+            color: #555;
+        }
+
+        .rerata-cell {
+            font-weight: 600;
+            color: #27ae60;
+            text-align: center;
+            width: 100px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .class-stats {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+        }
+
+        .class-stats h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .class-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .class-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+
+        .class-item:hover {
+            background: #e8f4fc;
+        }
+
+        .class-name {
+            font-weight: 600;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .class-count {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .top-performers {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            padding: 25px;
+        }
+
+        .top-performers h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #f0f0f0;
+        }
+
+        .top-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .top-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+        }
+
+        .top-rank {
+            width: 35px;
+            height: 35px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .top-details {
+            flex: 1;
+        }
+
+        .top-name {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 3px;
+        }
+
+        .top-class {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .footer a {
+            color: var(--secondary);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .search-box {
+                min-width: 100%;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .filter-group {
+                justify-content: center;
+            }
+            
+            th, td {
+                padding: 12px 10px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* No results */
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            color: #bdc3c7;
+            margin-bottom: 20px;
+        }
+
+        .no-results h4 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-trophy"></i> Data Pemeringkatan Siswa Eligible</h1>
+            <div class="subtitle">
+                <i class="fas fa-school"></i>
+                <span>SMA TAKHASSUS AL-QUR'AN WONOSOBO - Tahun Pelajaran 2025/2026</span>
+            </div>
+            <div class="badge">
+                <i class="fas fa-users"></i> JALUR SNBP - Total 166 Siswa Eligible
+            </div>
+        </div>
+
+        <!-- Stats Cards -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <i class="fas fa-user-graduate"></i>
+                <div class="stat-content">
+                    <h3 id="totalSiswa">166</h3>
+                    <p>Total Siswa Eligible</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-chart-line"></i>
+                <div class="stat-content">
+                    <h3 id="rerataTerbaik">87.69</h3>
+                    <p>Rata-rata Tertinggi</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-layer-group"></i>
+                <div class="stat-content">
+                    <h3 id="jumlahKelas">12</h3>
+                    <p>Kelas Terdata</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-search"></i>
+                <div class="stat-content">
+                    <h3 id="siswaDitampilkan">166</h3>
+                    <p>Siswa Ditampilkan</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Cari berdasarkan nama atau NISN...">
+            </div>
+            
+            <div class="filter-group">
+                <button class="filter-btn active" data-kelas="all">
+                    <i class="fas fa-globe"></i> Semua Kelas
+                </button>
+                <button class="filter-btn" data-kelas="12.A">
+                    <i class="fas fa-users"></i> 12.A
+                </button>
+                <button class="filter-btn" data-kelas="12.B">
+                    <i class="fas fa-users"></i> 12.B
+                </button>
+                <button class="filter-btn" data-kelas="12.C">
+                    <i class="fas fa-users"></i> 12.C
+                </button>
+                <button class="filter-btn" data-kelas="12.D">
+                    <i class="fas fa-users"></i> 12.D
+                </button>
+            </div>
+            
+            <button class="reset-btn" id="resetBtn">
+                <i class="fas fa-redo"></i> Reset Filter
+            </button>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Table Section -->
+            <div class="table-container">
+                <div class="table-header">
+                    <h3><i class="fas fa-list-ol"></i> Daftar Pemeringkatan Siswa</h3>
+                    <div class="table-info">
+                        Menampilkan <span id="filterCount">166</span> dari 166 siswa
+                    </div>
+                </div>
+                
+                <div class="table-wrapper">
+                    <table id="studentsTable">
+                        <thead>
+                            <tr>
+                                <th>PERINGKAT <i class="fas fa-sort"></i></th>
+                                <th>NAMA SISWA <i class="fas fa-sort"></i></th>
+                                <th>KELAS <i class="fas fa-sort"></i></th>
+                                <th>NISN</th>
+                                <th>RATA-RATA <i class="fas fa-sort"></i></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Class Statistics -->
+                <div class="class-stats">
+                    <h3><i class="fas fa-chart-pie"></i> Statistik per Kelas</h3>
+                    <div class="class-list" id="classList">
+                        <!-- Data akan diisi oleh JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Top Performers -->
+                <div class="top-performers">
+                    <h3><i class="fas fa-crown"></i> Top 5 Performers</h3>
+                    <div class="top-list" id="topList">
+                        <!-- Data akan diisi oleh JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Data Pemeringkatan Siswa Eligible Jalur SNBP SMA TAKHASSUS AL-QUR'AN WONOSOBO</p>
+            <p>Tahun Pelajaran 2025/2026 | Ditetapkan di Wonosobo, 12 Januari 2026</p>
+            <p><i class="fas fa-code"></i> Dibuat dengan ❤️ untuk keperluan administratif sekolah</p>
+        </div>
+    </div>
+
+    <script>
+        // Data siswa dari PDF yang sudah di-extract
+        const studentsData = [
+            { nama: "YONA AL'AINAA", kelas: "12.L", nisn: "0071418194", rerata: "87,694", peringkat: 1 },
+            { nama: "AQILA MILLATA TAMASSAK", kelas: "12.I", nisn: "0085220501", rerata: "85,894", peringkat: 2 },
+            { nama: "NAELY HAQ", kelas: "12.G", nisn: "0087777683", rerata: "85,625", peringkat: 3 },
+            { nama: "AISHA NAOMI MAULIDA", kelas: "12.F", nisn: "0069856838", rerata: "84,483", peringkat: 4 },
+            { nama: "SALMA KAMILA", kelas: "12.B", nisn: "0084785797", rerata: "84,260", peringkat: 5 },
+            { nama: "NADIA NURUL ULYA", kelas: "12.B", nisn: "0083837315", rerata: "83,906", peringkat: 6 },
+            { nama: "MUHAMMAD RAZAN", kelas: "12.D", nisn: "0061734573", rerata: "83,751", peringkat: 7 },
+            { nama: "HIDAYATUL MUMTAZA", kelas: "12.H", nisn: "0088277119", rerata: "83,631", peringkat: 8 },
+            { nama: "NABILA MILLATA TAMASSAK", kelas: "12.I", nisn: "0089118495", rerata: "83,617", peringkat: 9 },
+            { nama: "FITRI RAHMA AULIA", kelas: "12.B", nisn: "0089490161", rerata: "83,417", peringkat: 10 },
+            { nama: "ALFI ROHMAH SALSABILA", kelas: "12.G", nisn: "0081628240", rerata: "83,413", peringkat: 11 },
+            { nama: "UMMU FARIDA", kelas: "12.I", nisn: "0083366437", rerata: "83,254", peringkat: 12 },
+            { nama: "SYIFAU SA'ADAH", kelas: "12.J", nisn: "3073395407", rerata: "83,247", peringkat: 13 },
+            { nama: "AURA RIZQIKA AZIZIA", kelas: "12.A", nisn: "0084157369", rerata: "83,185", peringkat: 14 },
+            { nama: "HAVINA AULIA ZAHRA", kelas: "12.A", nisn: "0087264131", rerata: "83,162", peringkat: 15 },
+            { nama: "MUKHAMMAD KHAAZA ALMUBAAROKA", kelas: "12.K", nisn: "0064479116", rerata: "83,145", peringkat: 16 },
+            { nama: "ALYA HASNA KARIMA", kelas: "12.H", nisn: "0089465160", rerata: "82,980", peringkat: 17 },
+            { nama: "FAZIL ABI PRATAMA", kelas: "12.A", nisn: "0087120743", rerata: "82,963", peringkat: 18 },
+            { nama: "WARDA RAIHANA", kelas: "12.B", nisn: "0085485566", rerata: "82,931", peringkat: 19 },
+            { nama: "CHASNA EL MUFIDA", kelas: "12.G", nisn: "0085061336", rerata: "82,739", peringkat: 20 },
+            { nama: "NASYWA KHORUNNISA", kelas: "12.B", nisn: "0085024943", rerata: "82,516", peringkat: 21 },
+            { nama: "DZIHNI SADIDA", kelas: "12.B", nisn: "0083548564", rerata: "82,446", peringkat: 22 },
+            { nama: "AQILA 'UMDAH LATIFAH", kelas: "12.G", nisn: "0079251125", rerata: "82,379", peringkat: 23 },
+            { nama: "SASKIA AL CHUMAYA", kelas: "12.D", nisn: "0063780841", rerata: "82,353", peringkat: 24 },
+            { nama: "ANNISA DEWI WULANDARI", kelas: "12.H", nisn: "0071313526", rerata: "82,313", peringkat: 25 },
+            { nama: "AZZAENA UKRIMA ANAFINIDA", kelas: "12.F", nisn: "0082078173", rerata: "82,215", peringkat: 26 },
+            { nama: "AFIFAH SYAHNAZ BILOIS", kelas: "12.D", nisn: "0072113303", rerata: "82,204", peringkat: 27 },
+            { nama: "FAUSTA FIKA FIBRIANTI", kelas: "12.J", nisn: "0084346970", rerata: "82,193", peringkat: 28 },
+            { nama: "MAS LALLATUZAHRO", kelas: "12.J", nisn: "0077781465", rerata: "82,180", peringkat: 29 },
+            { nama: "RIZQI SYARIFATUZZAHRA", kelas: "12.B", nisn: "3078667458", rerata: "82,177", peringkat: 30 },
+            { nama: "FAIRUZ ZAHRAN ATS-TSAQIF", kelas: "12.G", nisn: "0085559340", rerata: "82,153", peringkat: 31 },
+            { nama: "AULIA NAJWA DZIKRIYYA", kelas: "12.G", nisn: "0085984322", rerata: "82,135", peringkat: 32 },
+            { nama: "SITI MARIYATUL QIBTIYAH", kelas: "12.F", nisn: "0075457834", rerata: "82,124", peringkat: 33 },
+            { nama: "IRFAI AFIF KHOIRI", kelas: "12.A", nisn: "0073282202", rerata: "82,106", peringkat: 34 },
+            { nama: "NURLI AFRIYATI", kelas: "12.F", nisn: "0083746062", rerata: "82,080", peringkat: 35 },
+            { nama: "NISAATUL AULIYANA ARIFIN", kelas: "12.E", nisn: "0082176766", rerata: "81,981", peringkat: 36 },
+            { nama: "SYIFA NIDA ULKHUSNA", kelas: "12.C", nisn: "3089669664", rerata: "81,972", peringkat: 37 },
+            { nama: "GAITSA FARACHEL SAUSAN", kelas: "12.H", nisn: "0072293184", rerata: "81,881", peringkat: 38 },
+            { nama: "IZZATUL AZKA ASH-SHIDQIY", kelas: "12.K", nisn: "0088269217", rerata: "81,864", peringkat: 39 },
+            { nama: "AISYA NALASYIFI MAHESWARI", kelas: "12.F", nisn: "0075329903", rerata: "81,843", peringkat: 40 },
+            { nama: "KAIZA ARUM SALEKHA PUTRI", kelas: "12.K", nisn: "0081281760", rerata: "81,758", peringkat: 41 },
+            { nama: "VATTIN NURROZIQ", kelas: "12.A", nisn: "3098063258", rerata: "81,753", peringkat: 42 },
+            { nama: "AMANDA ZAHRA SUFIATUSSHOLIHA", kelas: "12.E", nisn: "0076584950", rerata: "81,744", peringkat: 43 },
+            { nama: "MAULANA FERRI SETYAWAN", kelas: "12.C", nisn: "3077766560", rerata: "81,742", peringkat: 44 },
+            { nama: "FARCHA AULIA SHABRINA", kelas: "12.A", nisn: "3080725281", rerata: "81,713", peringkat: 45 },
+            { nama: "MUTHTAH 'ALIYYA HABIBAH", kelas: "12.H", nisn: "0088059262", rerata: "81,593", peringkat: 46 },
+            { nama: "YASMIN AL FATHIAH", kelas: "12.J", nisn: "0081200306", rerata: "81,583", peringkat: 47 },
+            { nama: "ANA SALWA QUDSIAH YASIN", kelas: "12.H", nisn: "0085837446", rerata: "81,555", peringkat: 48 },
+            { nama: "HIMMATUL ALIYAH", kelas: "12.E", nisn: "0075995906", rerata: "81,526", peringkat: 49 },
+            { nama: "AHIMSA PRAJNA AISYA", kelas: "12.I", nisn: "3083030794", rerata: "81,477", peringkat: 50 },
+            { nama: "FIRDA DURROTUL HIKMAH", kelas: "12.A", nisn: "0077002753", rerata: "81,463", peringkat: 51 },
+            { nama: "NAYLA KAMILA SYIFA", kelas: "12.I", nisn: "0073538041", rerata: "81,423", peringkat: 52 },
+            { nama: "ZAHRA NURUL AZKYA", kelas: "12.A", nisn: "0077066181", rerata: "81,388", peringkat: 53 },
+            { nama: "YOGA PRASETYA", kelas: "12.D", nisn: "0081713684", rerata: "81,374", peringkat: 54 },
+            { nama: "MEGA RAHMA AMALLIA", kelas: "12.C", nisn: "0082742309", rerata: "81,361", peringkat: 55 },
+            { nama: "NABILA ZAHRA NUR SAFITRI", kelas: "12.I", nisn: "0087060900", rerata: "81,348", peringkat: 56 },
+            { nama: "ISNA MAR'ATUL NGILMAN", kelas: "12.A", nisn: "0095820357", rerata: "81,335", peringkat: 57 },
+            { nama: "SAFA RANIA RAHMA", kelas: "12.F", nisn: "0077845308", rerata: "81,330", peringkat: 58 },
+            { nama: "NAYLA NAUFILAH", kelas: "12.I", nisn: "0086156335", rerata: "81,305", peringkat: 59 },
+            { nama: "WEKA AZARIA ZAKIYAH", kelas: "12.B", nisn: "0081345937", rerata: "81,300", peringkat: 60 },
+            { nama: "SATRYA DIKY RAHMAWAN", kelas: "12.C", nisn: "0087986669", rerata: "81,258", peringkat: 61 },
+            { nama: "NOVIA DWI ANGGURA", kelas: "12.I", nisn: "0088190904", rerata: "81,233", peringkat: 62 },
+            { nama: "IKA YULIANA PUTRI", kelas: "12.C", nisn: "0084067153", rerata: "81,217", peringkat: 63 },
+            { nama: "FRAMESTI FIRMADANI", kelas: "12.H", nisn: "0071635991", rerata: "81,185", peringkat: 64 },
+            { nama: "MUHAMAD ZULFIQHI BASIT", kelas: "12.D", nisn: "0076421201", rerata: "81,184", peringkat: 65 },
+            { nama: "TSANIA HUBBAZZUMA", kelas: "12.L", nisn: "0087063873", rerata: "81,161", peringkat: 66 },
+            { nama: "FAZIDA SAILA RIZQINA", kelas: "12.D", nisn: "0084621029", rerata: "81,054", peringkat: 67 },
+            { nama: "BANI ZIYAN MUTIARA ANNUR", kelas: "12.B", nisn: "0086554831", rerata: "81,046", peringkat: 68 },
+            { nama: "AMIRATUSSA'ADAH", kelas: "12.C", nisn: "0085708083", rerata: "81,043", peringkat: 69 },
+            { nama: "AZKIA SALSABILA", kelas: "12.H", nisn: "0072814134", rerata: "81,040", peringkat: 70 },
+            { nama: "JECHALIKA REFANI", kelas: "12.I", nisn: "0084060928", rerata: "81,026", peringkat: 71 },
+            { nama: "ALICIA NAIA ARTHALYTA", kelas: "12.L", nisn: "0087411824", rerata: "81,023", peringkat: 72 },
+            { nama: "ATHALITA HUSNA CANDRA KIRANA", kelas: "12.B", nisn: "0089609383", rerata: "81,012", peringkat: 73 },
+            { nama: "LUBNATUL FAIHA", kelas: "12.D", nisn: "0078508719", rerata: "81,011", peringkat: 74 },
+            { nama: "ADELA EQUEENA PUTRI SASONO", kelas: "12.H", nisn: "0082779864", rerata: "80,997", peringkat: 75 },
+            { nama: "GHALDA NUHA AULIA", kelas: "12.J", nisn: "0086575267", rerata: "80,977", peringkat: 76 },
+            { nama: "ANGGUN HADI NIHAYAH", kelas: "12.G", nisn: "0083541834", rerata: "80,976", peringkat: 77 },
+            { nama: "ZAHRANI AISHA SALSABILA", kelas: "12.B", nisn: "0085208688", rerata: "80,960", peringkat: 78 },
+            { nama: "VITA AMELIA PUTRI", kelas: "12.C", nisn: "0085556194", rerata: "80,909", peringkat: 79 },
+            { nama: "NAZLA RACHIMATUL ULYA", kelas: "12.H", nisn: "0088061945", rerata: "80,909", peringkat: 79 },
+            { nama: "WAFI ARIQ", kelas: "12.A", nisn: "0084520860", rerata: "80,906", peringkat: 81 },
+            { nama: "NIDA' HASNA FAKHRIYAH", kelas: "12.F", nisn: "0086245633", rerata: "80,902", peringkat: 82 },
+            { nama: "PRAWITA MAGHFIROH", kelas: "12.E", nisn: "0083168009", rerata: "80,815", peringkat: 83 },
+            { nama: "NIDA ZULFA KHANATUL KHUSNA", kelas: "12.C", nisn: "0083010918", rerata: "80,773", peringkat: 84 },
+            { nama: "NAJWA AULIA ZUHDIANA", kelas: "12.I", nisn: "0087407159", rerata: "80,734", peringkat: 85 },
+            { nama: "MUHAMMAD AFFAN AL GHIFARI", kelas: "12.F", nisn: "0073379166", rerata: "80,731", peringkat: 86 },
+            { nama: "NADIN ZAHRATIN NAFIDHAH", kelas: "12.F", nisn: "0073207308", rerata: "80,708", peringkat: 87 },
+            { nama: "SITI FADHILAH", kelas: "12.A", nisn: "0083547107", rerata: "80,607", peringkat: 88 },
+            { nama: "ABDULLAH KAFFANI", kelas: "12.L", nisn: "0085744709", rerata: "80,604", peringkat: 89 },
+            { nama: "IFATUL FAWAZ", kelas: "12.B", nisn: "0081156208", rerata: "80,547", peringkat: 90 },
+            { nama: "FLORETA HANUM SABILA", kelas: "12.A", nisn: "0087266880", rerata: "80,495", peringkat: 91 },
+            { nama: "MUHAMAD MAS'UDAN AL KAHFI", kelas: "12.L", nisn: "0082876544", rerata: "80,477", peringkat: 92 },
+            { nama: "WAHDAH MURTAFINGAH", kelas: "12.E", nisn: "0087645557", rerata: "80,476", peringkat: 93 },
+            { nama: "MUAISATUN NUR", kelas: "12.L", nisn: "0093240019", rerata: "80,466", peringkat: 94 },
+            { nama: "WAHYU ANDRIAN PRATAMA", kelas: "12.E", nisn: "0072356607", rerata: "80,443", peringkat: 95 },
+            { nama: "FERLITA FEBRIANA", kelas: "12.D", nisn: "0083895970", rerata: "80,424", peringkat: 96 },
+            { nama: "NOVIATUN ROSIDAH", kelas: "12.B", nisn: "0088974500", rerata: "80,410", peringkat: 97 },
+            { nama: "LUTFIA RIZQI AMALIA", kelas: "12.F", nisn: "0074639481", rerata: "80,392", peringkat: 98 },
+            { nama: "LAUDZA' YUMNA IMANDA", kelas: "12.G", nisn: "0072558981", rerata: "80,313", peringkat: 99 },
+            { nama: "AISYATUS SHOLIKHAH", kelas: "12.H", nisn: "3083109110", rerata: "80,312", peringkat: 100 },
+            { nama: "FARAH HIBBATUL MAULA", kelas: "12.B", nisn: "0082443950", rerata: "80,309", peringkat: 101 },
+            { nama: "NAJWA KINANTI ZAENNORA", kelas: "12.E", nisn: "0075074392", rerata: "80,280", peringkat: 102 },
+            { nama: "HANA ALIFA CHAKIM", kelas: "12.G", nisn: "0081801410", rerata: "80,213", peringkat: 103 },
+            { nama: "ESTRI LUTFIANA", kelas: "12.F", nisn: "0076229139", rerata: "80,178", peringkat: 104 },
+            { nama: "MULIA KHULWATUN NAFISAH", kelas: "12.F", nisn: "0096697293", rerata: "80,170", peringkat: 105 },
+            { nama: "NABILA DINDA FARUQ", kelas: "12.I", nisn: "3082705802", rerata: "80,163", peringkat: 106 },
+            { nama: "ERLINA SAFRINA KHOIRUL HASNA", kelas: "12.D", nisn: "0084574982", rerata: "80,158", peringkat: 107 },
+            { nama: "LULUK ANISATUN NADYA SOFWAH", kelas: "12.L", nisn: "3087880183", rerata: "80,136", peringkat: 108 },
+            { nama: "HUSNA HAFIZHAH RAHMANI", kelas: "12.B", nisn: "0085498970", rerata: "80,104", peringkat: 109 },
+            { nama: "AHMAD ZAENAL ARIFIN", kelas: "12.L", nisn: "0072382731", rerata: "80,099", peringkat: 110 },
+            { nama: "ARINI TAUSHI BILHAQ", kelas: "12.D", nisn: "0079780870", rerata: "80,069", peringkat: 111 },
+            { nama: "SALSA SABILA", kelas: "12.A", nisn: "0089710809", rerata: "80,035", peringkat: 112 },
+            { nama: "SHOFIA LATIFAH", kelas: "12.A", nisn: "0087030302", rerata: "80,033", peringkat: 113 },
+            { nama: "DUTA NIRMALA SARI", kelas: "12.K", nisn: "0081124521", rerata: "79,964", peringkat: 114 },
+            { nama: "AHMAD NADHIF GAMALULLAIL", kelas: "12.A", nisn: "0072512364", rerata: "79,942", peringkat: 115 },
+            { nama: "HANUN NAJAH HANIFAH", kelas: "12.F", nisn: "0089871493", rerata: "79,921", peringkat: 116 },
+            { nama: "GIAN DWI KIRANA", kelas: "12.G", nisn: "0089865078", rerata: "79,910", peringkat: 117 },
+            { nama: "HERNY SETYAWATI", kelas: "12.E", nisn: "0088457941", rerata: "79,908", peringkat: 118 },
+            { nama: "ZAHROTUN NAJWA AULIYA", kelas: "12.K", nisn: "3092434892", rerata: "79,884", peringkat: 119 },
+            { nama: "CELSI NURHANIFAH", kelas: "12.H", nisn: "0086874916", rerata: "79,881", peringkat: 120 },
+            { nama: "MUHAMMAD ABDAN MUBAROK", kelas: "12.A", nisn: "0081114336", rerata: "79,871", peringkat: 121 },
+            { nama: "RIZKY AZZAHRA", kelas: "12.D", nisn: "0083015577", rerata: "79,864", peringkat: 122 },
+            { nama: "AISYA NALASYIFA MAHESWARI", kelas: "12.I", nisn: "0077015853", rerata: "79,794", peringkat: 123 },
+            { nama: "ZAHROTUL AULIA", kelas: "12.A", nisn: "0085664210", rerata: "79,792", peringkat: 124 },
+            { nama: "HANIN RISKHA NABIGH", kelas: "12.G", nisn: "0084307571", rerata: "79,781", peringkat: 125 },
+            { nama: "AGISTA ZAPHYRA EL HAWA", kelas: "12.E", nisn: "0081403238", rerata: "79,688", peringkat: 126 },
+            { nama: "ALBIN MUHAMMAD 'ATHOILLAH", kelas: "12.H", nisn: "0077946336", rerata: "79,632", peringkat: 127 },
+            { nama: "SYAFIQ KAMALUDIN", kelas: "12.C", nisn: "3088286679", rerata: "79,540", peringkat: 128 },
+            { nama: "MALIKA NUR RAHMA", kelas: "12.F", nisn: "0082176288", rerata: "79,502", peringkat: 129 },
+            { nama: "PUTRI LESTIANINGSIH", kelas: "12.K", nisn: "0073022491", rerata: "79,492", peringkat: 130 },
+            { nama: "M. SAHIL RIZQI", kelas: "12.K", nisn: "0084603562", rerata: "79,461", peringkat: 131 },
+            { nama: "INDIRA SISKA MEYLADHEANI", kelas: "12.C", nisn: "0082216949", rerata: "79,459", peringkat: 132 },
+            { nama: "AYDA MARDIYAH", kelas: "12.D", nisn: "0088294317", rerata: "79,457", peringkat: 133 },
+            { nama: "SAHISHAH WULAN ANIQA", kelas: "12.C", nisn: "0082015144", rerata: "79,450", peringkat: 134 },
+            { nama: "LINTANG RAHMA NISA", kelas: "12.A", nisn: "0087120322", rerata: "79,449", peringkat: 135 },
+            { nama: "HENORA PUSPITA AULIA", kelas: "12.C", nisn: "0074461030", rerata: "79,410", peringkat: 136 },
+            { nama: "KHALIFAH DWI SAFITRI", kelas: "12.H", nisn: "0075150558", rerata: "79,407", peringkat: 137 },
+            { nama: "MUHAMAD RIDWAN NURHAKIM", kelas: "12.C", nisn: "0071149652", rerata: "79,396", peringkat: 138 },
+            { nama: "SUPRIVATI", kelas: "12.L", nisn: "0072917853", rerata: "79,390", peringkat: 139 },
+            { nama: "SYAKIRA ZANUBAH BASMAHARFA BILLAH", kelas: "12.E", nisn: "3089069061", rerata: "79,384", peringkat: 140 },
+            { nama: "FARHAH NAILA DZAKIROH", kelas: "12.J", nisn: "0086463247", rerata: "79,382", peringkat: 141 },
+            { nama: "LAILA SALSABILLA", kelas: "12.G", nisn: "0072828595", rerata: "79,344", peringkat: 142 },
+            { nama: "NABILA NUBDZA AULIA", kelas: "12.J", nisn: "0089879982", rerata: "79,333", peringkat: 143 },
+            { nama: "AIDA FITRIYANI", kelas: "12.J", nisn: "0088123192", rerata: "79,300", peringkat: 144 },
+            { nama: "RIZKY SEPTIA RAMADHANI", kelas: "12.J", nisn: "0074285150", rerata: "79,291", peringkat: 145 },
+            { nama: "RIFFAYATUN MAULA", kelas: "12.I", nisn: "0078641950", rerata: "79,257", peringkat: 146 },
+            { nama: "MIFTAHUL HIDAYAH", kelas: "12.D", nisn: "0084271209", rerata: "79,213", peringkat: 147 },
+            { nama: "NAELA CAHAYA PUTRI", kelas: "12.B", nisn: "0075202550", rerata: "79,202", peringkat: 148 },
+            { nama: "NADINA NAURANIDA", kelas: "12.G", nisn: "0081774178", rerata: "79,199", peringkat: 149 },
+            { nama: "WULAN RACHEL SYAHBANA", kelas: "12.F", nisn: "0077368302", rerata: "79,183", peringkat: 150 },
+            { nama: "FAHDINI AZKA AMALIA", kelas: "12.I", nisn: "0081761110", rerata: "79,163", peringkat: 151 },
+            { nama: "ALIVIA RAMADHANI", kelas: "12.B", nisn: "0082213527", rerata: "79,155", peringkat: 152 },
+            { nama: "FABIAN INDRA FIRMANDO", kelas: "12.E", nisn: "0083801512", rerata: "79,155", peringkat: 152 },
+            { nama: "SABRILLA NAJWA AL FARA", kelas: "12.C", nisn: "0082902553", rerata: "79,141", peringkat: 154 },
+            { nama: "IRCHAMNA MUSYTIKA RAHMAN", kelas: "12.K", nisn: "0088728595", rerata: "79,033", peringkat: 155 },
+            { nama: "MUHAMMAD FAKHRIY NAJIB", kelas: "12.H", nisn: "0086600663", rerata: "79,019", peringkat: 156 },
+            { nama: "M. ZALTAN IBROHIM MOVIC", kelas: "12.K", nisn: "0085975670", rerata: "78,968", peringkat: 157 },
+            { nama: "TATA AULIA KUMALASARI", kelas: "12.E", nisn: "0081660473", rerata: "78,962", peringkat: 158 },
+            { nama: "ADHIESTARA ADHA RIEZQA", kelas: "12.E", nisn: "0074498996", rerata: "78,961", peringkat: 159 },
+            { nama: "MUHAMMAD FAHRI ALFIAN", kelas: "12.G", nisn: "0077190992", rerata: "78,957", peringkat: 160 },
+            { nama: "AULLA SYIFA AZ-ZAHRA", kelas: "12.D", nisn: "0086553994", rerata: "78,928", peringkat: 161 },
+            { nama: "ERYNKA AULYA RAMADHANI", kelas: "12.J", nisn: "0082001889", rerata: "78,923", peringkat: 162 },
+            { nama: "FAHRI DWI YAHYA", kelas: "12.G", nisn: "0082866823", rerata: "78,918", peringkat: 163 },
+            { nama: "ANGGI DEVI CAHYANI", kelas: "12.H", nisn: "0074935025", rerata: "78,899", peringkat: 164 },
+            { nama: "RAIHAN BUYUNG PAMUNGKAS", kelas: "12.H", nisn: "0083948150", rerata: "78,873", peringkat: 165 },
+            { nama: "RADITYA FAKHRI FARDHANA", kelas: "12.F", nisn: "0071350693", rerata: "78,857", peringkat: 166 }
+        ];
+
+        // State aplikasi
+        let currentFilter = "all";
+        let currentSearch = "";
+        let sortColumn = "peringkat";
+        let sortDirection = "asc";
+
+        // Inisialisasi
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTable();
+            updateClassStats();
+            updateTopPerformers();
+            setupEventListeners();
+            updateStats();
+        });
+
+        // Render tabel
+        function renderTable() {
+            const tableBody = document.getElementById('tableBody');
+            const filteredStudents = getFilteredStudents();
+            
+            if (filteredStudents.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="no-results">
+                            <i class="fas fa-search"></i>
+                            <h4>Tidak ditemukan data siswa</h4>
+                            <p>Coba gunakan kata kunci pencarian yang berbeda</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            let html = '';
+            filteredStudents.forEach(student => {
+                const rankingClass = student.peringkat <= 3 ? `ranking-${student.peringkat}` : '';
+                
+                html += `
+                    <tr>
+                        <td class="ranking-cell ${rankingClass}">${student.peringkat}</td>
+                        <td class="nama-cell">${highlightSearchTerm(student.nama)}</td>
+                        <td class="kelas-cell">${student.kelas}</td>
+                        <td class="nisn-cell">${student.nisn}</td>
+                        <td class="rerata-cell">${student.rerata}</td>
+                    </tr>
+                `;
+            });
+            
+            tableBody.innerHTML = html;
+            document.getElementById('filterCount').textContent = filteredStudents.length;
+            document.getElementById('siswaDitampilkan').textContent = filteredStudents.length;
+        }
+
+        // Filter siswa berdasarkan pencarian dan kelas
+        function getFilteredStudents() {
+            let filtered = [...studentsData];
+            
+            // Filter berdasarkan pencarian
+            if (currentSearch.trim() !== '') {
+                const searchLower = currentSearch.toLowerCase();
+                filtered = filtered.filter(student => 
+                    student.nama.toLowerCase().includes(searchLower) ||
+                    student.nisn.includes(searchLower) ||
+                    student.kelas.toLowerCase().includes(searchLower)
+                );
+            }
+            
+            // Filter berdasarkan kelas
+            if (currentFilter !== "all") {
+                filtered = filtered.filter(student => student.kelas === currentFilter);
+            }
+            
+            // Sort
+            filtered.sort((a, b) => {
+                let valA, valB;
+                
+                if (sortColumn === "rerata") {
+                    valA = parseFloat(a[sortColumn].replace(',', '.'));
+                    valB = parseFloat(b[sortColumn].replace(',', '.'));
+                } else if (sortColumn === "peringkat") {
+                    valA = a[sortColumn];
+                    valB = b[sortColumn];
+                } else {
+                    valA = a[sortColumn];
+                    valB = b[sortColumn];
+                }
+                
+                if (sortDirection === "asc") {
+                    return valA > valB ? 1 : -1;
+                } else {
+                    return valA < valB ? 1 : -1;
+                }
+            });
+            
+            return filtered;
+        }
+
+        // Update statistik kelas
+        function updateClassStats() {
+            const classCounts = {};
+            
+            // Hitung jumlah per kelas
+            studentsData.forEach(student => {
+                classCounts[student.kelas] = (classCounts[student.kelas] || 0) + 1;
+            });
+            
+            // Urutkan kelas
+            const sortedClasses = Object.keys(classCounts).sort();
+            
+            // Render class list
+            const classList = document.getElementById('classList');
+            let html = '';
+            
+            sortedClasses.forEach(kelas => {
+                const count = classCounts[kelas];
+                const filteredCount = getFilteredStudents().filter(s => s.kelas === kelas).length;
+                const isActive = currentFilter === kelas || currentFilter === "all";
+                
+                html += `
+                    <div class="class-item ${!isActive ? 'inactive' : ''}" onclick="filterByClass('${kelas}')">
+                        <div class="class-name">
+                            <i class="fas fa-users"></i>
+                            <span>Kelas ${kelas}</span>
+                        </div>
+                        <div class="class-count">${count} siswa</div>
+                    </div>
+                `;
+            });
+            
+            classList.innerHTML = html;
+            document.getElementById('jumlahKelas').textContent = sortedClasses.length;
+        }
+
+        // Update top performers
+        function updateTopPerformers() {
+            const topList = document.getElementById('topList');
+            let html = '';
+            
+            // Ambil 5 teratas
+            for (let i = 0; i < Math.min(5, studentsData.length); i++) {
+                const student = studentsData[i];
+                html += `
+                    <div class="top-item">
+                        <div class="top-rank">${student.peringkat}</div>
+                        <div class="top-details">
+                            <div class="top-name">${student.nama}</div>
+                            <div class="top-class">${student.kelas} • ${student.rerata}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            topList.innerHTML = html;
+        }
+
+        // Update statistik
+        function updateStats() {
+            const filteredStudents = getFilteredStudents();
+            
+            if (filteredStudents.length > 0) {
+                const rerataValues = filteredStudents.map(s => 
+                    parseFloat(s.rerata.replace(',', '.'))
+                );
+                const maxRerata = Math.max(...rerataValues);
+                
+                document.getElementById('rerataTerbaik').textContent = maxRerata.toFixed(2).replace('.', ',');
+            }
+        }
+
+        // Highlight pencarian
+        function highlightSearchTerm(text) {
+            if (!currentSearch.trim()) return text;
+            
+            const searchLower = currentSearch.toLowerCase();
+            const textLower = text.toLowerCase();
+            const startIndex = textLower.indexOf(searchLower);
+            
+            if (startIndex === -1) return text;
+            
+            const endIndex = startIndex + searchLower.length;
+            const before = text.substring(0, startIndex);
+            const match = text.substring(startIndex, endIndex);
+            const after = text.substring(endIndex);
+            
+            return `${before}<span style="background-color: #fff3cd; padding: 2px 4px; border-radius: 3px; font-weight: bold;">${match}</span>${after}`;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Search input
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                currentSearch = e.target.value;
+                renderTable();
+                updateClassStats();
+                updateStats();
+            });
+            
+            // Filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const kelas = this.getAttribute('data-kelas');
+                    filterByClass(kelas);
+                });
+            });
+            
+            // Reset button
+            document.getElementById('resetBtn').addEventListener('click', function() {
+                currentSearch = '';
+                currentFilter = 'all';
+                sortColumn = 'peringkat';
+                sortDirection = 'asc';
+                
+                document.getElementById('searchInput').value = '';
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                document.querySelector('.filter-btn[data-kelas="all"]').classList.add('active');
+                
+                renderTable();
+                updateClassStats();
+                updateStats();
+            });
+            
+            // Sort table headers
+            document.querySelectorAll('th').forEach((th, index) => {
+                th.addEventListener('click', function() {
+                    const columns = ['peringkat', 'nama', 'kelas', 'nisn', 'rerata'];
+                    const column = columns[index];
+                    
+                    if (sortColumn === column) {
+                        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+                    } else {
+                        sortColumn = column;
+                        sortDirection = 'asc';
+                    }
+                    
+                    renderTable();
+                });
+            });
+        }
+
+        // Filter by class function (global untuk onclick)
+        function filterByClass(kelas) {
+            currentFilter = kelas;
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`.filter-btn[data-kelas="${kelas}"]`).classList.add('active');
+            
+            renderTable();
+            updateClassStats();
+            updateStats();
+        }
+    </script>
+</body>
+</html>
