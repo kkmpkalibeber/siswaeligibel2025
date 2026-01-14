@@ -6,6 +6,7 @@
     <title>Data Pemeringkatan Siswa Eligible - SMA Takhassus Al-Qur'an Wonosobo</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -36,6 +37,162 @@
         .container {
             max-width: 1400px;
             margin: 0 auto;
+        }
+
+        /* Login Styles */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 1000;
+            transition: opacity 0.3s ease;
+        }
+
+        .login-container.hidden {
+            display: none;
+        }
+
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-logo {
+            margin-bottom: 30px;
+        }
+
+        .login-logo h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-logo p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .login-form input, .login-form select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: #f9f9f9;
+        }
+
+        .login-form input:focus, .login-form select:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(to right, var(--primary), #34495e);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .login-error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+
+        .login-error.show {
+            display: block;
+        }
+
+        .user-info {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .user-info-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-role {
+            background: var(--accent);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            color: white;
+            border: none;
+            padding: 6px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .logout-btn:hover {
+            background: rgba(255,255,255,0.3);
         }
 
         /* Header Styles */
@@ -229,6 +386,25 @@
 
         .reset-btn:hover {
             background: #e9ecef;
+        }
+
+        .export-btn {
+            padding: 12px 25px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-btn:hover {
+            background: #219653;
+            transform: translateY(-2px);
         }
 
         /* Main Content */
@@ -536,10 +712,68 @@
             margin-bottom: 10px;
             color: #7f8c8d;
         }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <!-- Login Form -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <div class="login-logo">
+                <h2><i class="fas fa-trophy"></i> Data Pemeringkatan Siswa</h2>
+                <p>SMA TAKHASSUS AL-QUR'AN WONOSOBO</p>
+            </div>
+            
+            <form class="login-form" id="loginForm">
+                <div class="form-group">
+                    <label for="userType"><i class="fas fa-user-tag"></i> Jenis Pengguna</label>
+                    <select id="userType" required>
+                        <option value="">Pilih jenis pengguna</option>
+                        <option value="admin">Administrator</option>
+                        <option value="walas">Wali Kelas (Walas)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <input type="password" id="password" placeholder="Masukkan password" required>
+                </div>
+                
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Masuk ke Sistem
+                </button>
+                
+                <div class="login-error" id="loginError">
+                    Password salah! Silakan coba lagi.
+                </div>
+            </form>
+            
+            <div style="margin-top: 20px; font-size: 0.85rem; color: #666;">
+                <p><strong>Info Login:</strong></p>
+                <p>• Admin: password <code>f4150l</code></p>
+                <p>• Walas: password <code>smataqjaya</code></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content (Initially Hidden) -->
+    <div class="container hidden" id="mainContainer">
+        <!-- User Info Bar -->
+        <div class="user-info">
+            <div class="user-info-left">
+                <i class="fas fa-user-circle"></i>
+                <span id="currentUser">Administrator</span>
+                <span class="user-role" id="userRole">ADMIN</span>
+            </div>
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </div>
+
         <!-- Header -->
         <div class="header">
             <h1><i class="fas fa-trophy"></i> Data Pemeringkatan Siswa Eligible</h1>
@@ -607,10 +841,38 @@
                 <button class="filter-btn" data-kelas="12.D">
                     <i class="fas fa-users"></i> 12.D
                 </button>
+                <button class="filter-btn" data-kelas="12.E">
+                    <i class="fas fa-users"></i> 12.E
+                </button>
+                <button class="filter-btn" data-kelas="12.F">
+                    <i class="fas fa-users"></i> 12.F
+                </button>
+                <button class="filter-btn" data-kelas="12.G">
+                    <i class="fas fa-users"></i> 12.G
+                </button>
+                <button class="filter-btn" data-kelas="12.H">
+                    <i class="fas fa-users"></i> 12.H
+                </button>
+                <button class="filter-btn" data-kelas="12.I">
+                    <i class="fas fa-users"></i> 12.I
+                </button>
+                <button class="filter-btn" data-kelas="12.J">
+                    <i class="fas fa-users"></i> 12.J
+                </button>
+                <button class="filter-btn" data-kelas="12.K">
+                    <i class="fas fa-users"></i> 12.K
+                </button>
+                <button class="filter-btn" data-kelas="12.L">
+                    <i class="fas fa-users"></i> 12.L
+                </button>
             </div>
             
             <button class="reset-btn" id="resetBtn">
                 <i class="fas fa-redo"></i> Reset Filter
+            </button>
+            
+            <button class="export-btn hidden" id="exportBtn">
+                <i class="fas fa-file-excel"></i> Export ke Excel
             </button>
         </div>
 
@@ -847,15 +1109,175 @@
         let currentSearch = "";
         let sortColumn = "peringkat";
         let sortDirection = "asc";
+        let currentUser = null;
+        let currentUserRole = null;
 
         // Inisialisasi
         document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            setupLoginForm();
+            setupLogoutButton();
+        });
+
+        // Cek status login dari localStorage
+        function checkLoginStatus() {
+            const savedUser = localStorage.getItem('userRole');
+            const savedUsername = localStorage.getItem('username');
+            
+            if (savedUser && savedUsername) {
+                currentUserRole = savedUser;
+                currentUser = savedUsername;
+                showMainApp();
+            } else {
+                showLoginForm();
+            }
+        }
+
+        // Setup form login
+        function setupLoginForm() {
+            const loginForm = document.getElementById('loginForm');
+            const userTypeSelect = document.getElementById('userType');
+            const passwordInput = document.getElementById('password');
+            const loginError = document.getElementById('loginError');
+
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const userType = userTypeSelect.value;
+                const password = passwordInput.value;
+                
+                // Validasi login
+                let isValid = false;
+                let username = '';
+                
+                if (userType === 'admin' && password === 'f4150l') {
+                    isValid = true;
+                    username = 'Administrator';
+                } else if (userType === 'walas' && password === 'smataqjaya') {
+                    isValid = true;
+                    username = 'Wali Kelas';
+                }
+                
+                if (isValid) {
+                    // Login berhasil
+                    currentUserRole = userType;
+                    currentUser = username;
+                    
+                    // Simpan ke localStorage
+                    localStorage.setItem('userRole', userType);
+                    localStorage.setItem('username', username);
+                    
+                    // Tampilkan aplikasi utama
+                    showMainApp();
+                    loginError.classList.remove('show');
+                } else {
+                    // Login gagal
+                    loginError.classList.add('show');
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            });
+        }
+
+        // Setup tombol logout
+        function setupLogoutButton() {
+            const logoutBtn = document.getElementById('logoutBtn');
+            logoutBtn.addEventListener('click', function() {
+                // Hapus data dari localStorage
+                localStorage.removeItem('userRole');
+                localStorage.removeItem('username');
+                
+                // Reset state
+                currentUser = null;
+                currentUserRole = null;
+                
+                // Tampilkan form login
+                showLoginForm();
+            });
+        }
+
+        // Tampilkan form login
+        function showLoginForm() {
+            document.getElementById('loginContainer').classList.remove('hidden');
+            document.getElementById('mainContainer').classList.add('hidden');
+            
+            // Reset form
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginError').classList.remove('show');
+        }
+
+        // Tampilkan aplikasi utama
+        function showMainApp() {
+            document.getElementById('loginContainer').classList.add('hidden');
+            document.getElementById('mainContainer').classList.remove('hidden');
+            
+            // Update info user
+            document.getElementById('currentUser').textContent = currentUser;
+            document.getElementById('userRole').textContent = currentUserRole.toUpperCase();
+            
+            // Tampilkan tombol export hanya untuk admin
+            const exportBtn = document.getElementById('exportBtn');
+            if (currentUserRole === 'admin') {
+                exportBtn.classList.remove('hidden');
+                setupExportButton();
+            } else {
+                exportBtn.classList.add('hidden');
+            }
+            
+            // Render data
             renderTable();
             updateClassStats();
             updateTopPerformers();
             setupEventListeners();
             updateStats();
-        });
+        }
+
+        // Setup tombol export
+        function setupExportButton() {
+            const exportBtn = document.getElementById('exportBtn');
+            exportBtn.addEventListener('click', exportToExcel);
+        }
+
+        // Fungsi export ke Excel
+        function exportToExcel() {
+            const filteredStudents = getFilteredStudents();
+            
+            // Siapkan data untuk Excel
+            const excelData = filteredStudents.map(student => ({
+                'PERINGKAT': student.peringkat,
+                'NAMA SISWA': student.nama,
+                'KELAS': student.kelas,
+                'NISN': student.nisn,
+                'RATA-RATA': student.rerata
+            }));
+            
+            // Buat worksheet
+            const ws = XLSX.utils.json_to_sheet(excelData);
+            
+            // Atur lebar kolom
+            const wscols = [
+                {wch: 10}, // PERINGKAT
+                {wch: 40}, // NAMA SISWA
+                {wch: 10}, // KELAS
+                {wch: 15}, // NISN
+                {wch: 15}  // RATA-RATA
+            ];
+            ws['!cols'] = wscols;
+            
+            // Buat workbook
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Data Siswa');
+            
+            // Generate nama file dengan timestamp
+            const timestamp = new Date().toISOString().slice(0, 19).replace(/[:T]/g, '-');
+            const filename = `Data_Siswa_Eligible_${timestamp}.xlsx`;
+            
+            // Download file
+            XLSX.writeFile(wb, filename);
+            
+            // Tampilkan notifikasi
+            alert(`Data berhasil diexport ke ${filename}`);
+        }
 
         // Render tabel
         function renderTable() {
@@ -1090,7 +1512,10 @@
             
             // Update active button
             document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            document.querySelector(`.filter-btn[data-kelas="${kelas}"]`).classList.add('active');
+            const targetBtn = document.querySelector(`.filter-btn[data-kelas="${kelas}"]`);
+            if (targetBtn) {
+                targetBtn.classList.add('active');
+            }
             
             renderTable();
             updateClassStats();
